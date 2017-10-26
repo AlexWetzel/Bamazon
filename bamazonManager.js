@@ -33,7 +33,7 @@ function displayLowStock() {
 	    head: ['item ID', 'product name', 'department', 'price', 'quantity']
 	  , colWidths: [8, 60, 16, 8, 10]
 	});
-	connection.query("SELECT * FROM products WHERE stock_quantity = 15", function(err, res){
+	connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, res){
 		console.log("This is working");
 		if (err) throw err;
 		if (res.length === 0) {
