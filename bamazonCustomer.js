@@ -1,7 +1,8 @@
+//required npm packages
 var mysql = require("mysql");
 var Table = require("cli-table");
 var inquirer = require('inquirer');
-
+//object to store the connection information
 var connection = mysql.createConnection({
 	host:"localhost",
 	port: 3306,
@@ -9,21 +10,22 @@ var connection = mysql.createConnection({
 	password: "RootPass",
 	database: "bamazon"
 });
-
+//Variable storing the table data
 var table = new Table({
     head: ['item ID', 'product name', 'department', 'price', 'quantity']
-  , colWidths: [8, 60, 16, 8, 10]
+  , colWidths: [9, 60, 16, 8, 10]
 });
-
+//Variables to store order information
 var itemID = 0;
 var orderQty = 0;
 var itemName = "";
 var price = 0;
 var stock = 0;
-
+//Displays the product table in the console, then prompts the user
 function displayStock() {
 	connection.query("SELECT * FROM products", function(err, res){
 		if (err) throw err;
+		//Pass each object key into the table object to create a row. Repeat for all rows
 		for (var i = 0; i < res.length; i++) {
 			table.push(Object.keys(res[i]).map(function(key) {return res[i][key];}));
 		}
@@ -31,7 +33,7 @@ function displayStock() {
 		promptCustomer(res);
 	});
 };
-
+//Prompts the user for a their desired product's ID, and the quantity they want to purchase
 function promptCustomer(res) {
 	inquirer.prompt([
 	{
@@ -45,7 +47,7 @@ function promptCustomer(res) {
 		message: "How many would you like to purchase?"
 	}		
 		]).then(function (answers) {
-		// console.log("This works")
+		//Stores the data of the user's chosen item to be used later
 		itemID = answers.itemID;
 		orderQty = answers.quantity;
 		var item = res[itemID - 1];
@@ -53,72 +55,38 @@ function promptCustomer(res) {
 		price = item.price;
 		stockQty = item.stock_quantity;
    
-		// getStock(); 
 		placeOrder();
 	});
 };
-
-// function getStock() {
-// 	connection.query("SELECT stock_quantity FROM products WHERE item_id = ?", itemID, function(err, res) {
-// 		if (err) throw err;
-// 		// console.log(res[0].stock_quantity);
-// 		var stockQty = res[0].stock_quantity;
-// 		// console.log(stockQty);
-// 		var newQty = stockQty - orderQty
-// 		// console.log(newQty);
-
-// 		if (newQty < 0) {
-// 			console.log("Order too much. canceled order")
-// 			connection.end();
-// 			return
-// 		}
-// 		else if (newQty > stockQty) {
-// 			console.log("No returns!")
-// 			connection.end();
-// 			return
-// 		}
-
-// 		placeOrder(newQty)
-
-// 	});
-// };
-
+//Checks if the order quantity is valid, updates the table, and displays the charge amount
 function placeOrder(newQty) {
-
-	var newQty = stockQty - orderQty;
-
-	console.log("Order: " + orderQty);
-	console.log("Stock: " + stockQty);
-	console.log("New: " + newQty);
-
-	if (newQty < 0) {
-		console.log("Order too much. canceled order")
+	//If the order quantity isn't valid, the program ends
+	if (orderQty > stockQty) {
+		console.log("Ordered too much. Order canceled")
 		connection.end();
 		return
 	}
-	else if (newQty > stockQty) {
+	else if (orderQty < 0) {
 		console.log("No returns!")
 		connection.end();
 		return
 	}
-
-	//Get the quantity from the database stock and subtract the order quantity to get the new quantity
-	connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",[newQty, itemID] ,function(err, res) {
-		console.log("This is working")
+	else if (orderQty === 0) {
+		console.log("Order canceled")
+	}
+	//Updates the database to reflect the purchased stock
+	connection.query("UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",[orderQty, itemID] ,function(err, res) {
 		if (err) throw err;
-
+		//If the database successfully updates, the user is shown the chrarge amount of their order
 		var charge = orderQty * price;
 		console.log("You ordered " + orderQty + " of item: " + itemName);
 		console.log("Your total is: $" + charge);
 		connection.end();
 	});
 };
-
+//Starts the connection to the server. If successful, displays the stock
 connection.connect(function(err) {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId);
-  displayStock();
-});
-
-// placeOrder(1, 0);
-//Prompts the user for the item ID, then asks how many units they want	        
+	if (err) throw err;
+	console.log("connected as id " + connection.threadId);
+	displayStock();
+});       
