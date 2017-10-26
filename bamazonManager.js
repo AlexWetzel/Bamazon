@@ -10,12 +10,13 @@ var connection = mysql.createConnection({
 	database: "bamazon"
 });
 
-var table = new Table({
-    head: ['item ID', 'product name', 'department', 'price', 'quantity']
-  , colWidths: [8, 60, 16, 8, 10]
-});
+
 
 function displayStock() {
+	var table = new Table({
+	    head: ['item ID', 'product name', 'department', 'price', 'quantity']
+	  , colWidths: [8, 60, 16, 8, 10]
+	});
 	connection.query("SELECT * FROM products", function(err, res){
 		console.log("This is working");
 		if (err) throw err;
@@ -26,6 +27,25 @@ function displayStock() {
 		promptManager();
 	});
 };
+
+function displayLowStock() {
+	var table = new Table({
+	    head: ['item ID', 'product name', 'department', 'price', 'quantity']
+	  , colWidths: [8, 60, 16, 8, 10]
+	});
+	connection.query("SELECT * FROM products WHERE stock_quantity = 15", function(err, res){
+		console.log("This is working");
+		if (err) throw err;
+		if (res.length === 0) {
+			console.log("Inventory is sufficiently stocked")
+		}
+		for (var i = 0; i < res.length; i++) {
+			table.push(Object.keys(res[i]).map(function(key) {return res[i][key];}));
+		}
+		console.log(table.toString());
+		promptManager();
+	});
+}
 
 function testFunction() {
 	console.log("test");
@@ -39,7 +59,7 @@ var promptManager = function() {
 		message: "What would you like to do?",
 		choices: [
 			"View Products for Sale",
-			"View Los Inventory",
+			"View Low Inventory",
 			"Add to Inventory",
 			"Add New Product"
 		]
@@ -55,8 +75,8 @@ var promptManager = function() {
 				// testFunction();
 				break;
 
-			case "View Los Inventory":
-				console.log("ok");
+			case "View Low Inventory":
+				displayLowStock();
 				break;
 
 			case "Add to Inventory":

@@ -48,7 +48,7 @@ function promptCustomer(res) {
 		// console.log("This works")
 		itemID = answers.itemID;
 		orderQty = answers.quantity;
-		var item = res[itemID]
+		var item = res[itemID - 1];
 		itemName = item.product_name;
 		price = item.price;
 		stockQty = item.stock_quantity;
@@ -87,6 +87,10 @@ function placeOrder(newQty) {
 
 	var newQty = stockQty - orderQty;
 
+	console.log("Order: " + orderQty);
+	console.log("Stock: " + stockQty);
+	console.log("New: " + newQty);
+
 	if (newQty < 0) {
 		console.log("Order too much. canceled order")
 		connection.end();
@@ -100,6 +104,7 @@ function placeOrder(newQty) {
 
 	//Get the quantity from the database stock and subtract the order quantity to get the new quantity
 	connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",[newQty, itemID] ,function(err, res) {
+		console.log("This is working")
 		if (err) throw err;
 
 		var charge = orderQty * price;
