@@ -40,30 +40,34 @@ The quantity of product ordered is removed from the stock. We can see this when 
 
 In the bamazon directory in the command line, type 'node bamazonManager.js' to run the app.
 
---pic--
-
 The app will display four options. Enter the option number to execute that function. Once the function is complete, the program will prompt the user again.
+
+![Bamazon manager options](/images/bamazonManagerAppStart.png)
 
 ### View Products for Sale
 
-This option displays the products table.
+This option displays the products table. A table is displayed when the app starts, bot not for the other functions. Use this function to show the table again.
 
---pic--
+![Product Table Display](/images/bamazonManagerDisplay.png)
 
 ### View Low Inventory
 
 This option displays a table of products that have less than 5 units in stock.
 
---pic--
+![Items with low inventory](/images/bamazonManagerLowInv.png)
 
 ### Add to Inventory
 
 This option will prompt the user for the ID of an item to be restocked. Then it will prompt the quantity of product to order. Upon entering the values, the database is updated with the new stock, and a confirmation message is displayed.
 
---pic--
+![Prompts to increase the stock of an item](/images/bamazonManagerAddInv.png)
 
 ### Add New Product
 
 This option adds a brand new product to the store. The app prompts the user for the item name, price, department, and quantity. Once these are entered, a new row is added with in the database with the new item's information. A confirmation is displayed if this is successful.
 
---pic--
+![Prompts to add a product to the store](/images/bamazonManagerAddProduct.png)
+
+We can see our new product when we choose option 1.
+
+![Table updated with the new product](/images/bamazonManagerNewProduct.png)

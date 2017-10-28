@@ -111,7 +111,7 @@ function addNewProduct() {
 			"VALUE (?, ?, ?, ?)", [newItem, dept, price, orderQty], function(err, res){
 			if (err) throw err;
 
-			console.log("Successfully ordered" + orderQty + " of item: " + newItem);
+			console.log("\nSuccessfully ordered " + orderQty + " of item: " + newItem + "\n");
 			promptManager();
 		});
 	});
