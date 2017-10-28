@@ -71,3 +71,5 @@ This option adds a brand new product to the store. The app prompts the user for 
 We can see our new product when we choose option 1.
 
 ![Table updated with the new product](/images/bamazonManagerNewProduct.png)
+
+(Note: I removed a row from the database. That's why the index of the last item is 6, not 5)
