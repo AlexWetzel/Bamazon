@@ -20,16 +20,21 @@ There are two separate applications:
 
 Open the command line and navigate to the bamazon directory. To run bamazonCustomer.js, type 'node bamazonCustomer.js'.
 
---picture here--
+Starting the app will display a table of products in the store.
 
-The app prompts you to enter the ID for the item you want. The ID is the number in the first column. Enter the number corresponding to a product.
+![Application start](/images/bamazonCustomerTable.png)
 
---picture here--
+The app prompts you to enter the ID for the item you want. The ID is the number in the first column. Enter the number corresponding to a product. Another prompt asks how many of the selected product you want. Enter a number greater than zero up to and including the current stock of the selected item.
 
-The next promt asks how many of the selected product you want. Enter a number greater than zero up to and including the current stock of the selected item.
+![Prompts for item # and order quantity](/images/bamazonCustomerPrompts.png)
 
+Once you hit enter, a message prints your order information, including the total charge.
 
-Once you hit enter, a message prints your order information, including the total charge. The quantity of product ordered is removed from the stock. We can see this when we restart the app.
+![Order is confirmed and the charge is displayed](/images/bamazonCustomerOrder.png)
+
+The quantity of product ordered is removed from the stock. We can see this when we restart the app.
+
+![The stock of item #1 decreased](/images/bamazonCustomerCheck.png)
 
 ## BamazonManager.js
 

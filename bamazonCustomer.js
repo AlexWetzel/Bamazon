@@ -79,6 +79,7 @@ function placeOrder(newQty) {
 		if (err) throw err;
 		//If the database successfully updates, the user is shown the chrarge amount of their order
 		var charge = orderQty * price;
+		charge = charge.toFixed(2);
 		console.log("You ordered " + orderQty + " of item: " + itemName);
 		console.log("Your total is: $" + charge);
 		connection.end();
